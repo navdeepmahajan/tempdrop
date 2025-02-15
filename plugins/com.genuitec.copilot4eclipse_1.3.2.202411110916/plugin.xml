@@ -1,0 +1,484 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+	
+	<extension point="org.eclipse.ui.startup">
+		<startup class="com.genuitec.copilot4eclipse.EarlyStartup" />
+	</extension>
+	
+	<extension
+		point="org.eclipse.core.contenttype.contentTypes">
+	   <content-type
+            id="org.genuitec.copilot4eclipse.dummy"
+            name="Copilot supported content-type"
+            priority="normal" />
+	</extension>
+    
+<!-- see chat for the default langserver
+	<extension
+		point="org.eclipse.lsp4e.languageServer">
+		<server
+			id="com.genuitec.copilot4eclipse.copilot"
+			label="Copilot4Eclipse Language Server"
+			class="com.genuitec.copilot4eclipse.lsp.CopilotProcessStreamConnectionProvider"
+			clientImpl="com.genuitec.copilot4eclipse.lsp.CopilotLanguageClientImpl"
+			serverInterface="com.genuitec.copilot4eclipse.lsp.ICopilotLanguageServer"
+			singleton="true"
+			lastDocumentDisconnectedTimeout="30">
+		</server>
+		<contentTypeMapping
+		    id="com.genuitec.copilot4eclipse.copilot"
+            languageId="dummyDoNotUse"
+            contentType="org.genuitec.copilot4eclipse.dummy">
+        </contentTypeMapping>
+	</extension>
+-->
+	<extension
+		point="org.eclipse.ui.preferencePages">
+        <page
+            id="com.genuitec.copilot4eclipse.preferences.MainPreferencePage"
+            name="Copilot4Eclipse"
+            class="com.genuitec.copilot4eclipse.preferences.MainPreferencePage">
+      	</page>
+      	<page
+            id="com.genuitec.copilot4eclipse.preferences.NetworkSettingsPreferencePage"
+            name="Network &amp; Monitoring"
+            class="com.genuitec.copilot4eclipse.preferences.NetworkSettingsPreferencePage"
+            category="com.genuitec.copilot4eclipse.preferences.MainPreferencePage" >
+      	</page>
+   	</extension>
+   	<extension
+        point="org.eclipse.core.runtime.preferences">
+      	<initializer
+            class="com.genuitec.copilot4eclipse.preferences.PreferenceInitializer">
+      	</initializer>
+   	</extension>
+	
+	<extension
+		point="org.eclipse.ui.commands">
+		<category
+			id="com.genuitec.copilot4eclipse.commands.category"
+			name="Copilot4Eclipse">
+		</category>
+		<command
+			categoryId="com.genuitec.copilot4eclipse.commands.category"
+			name="Status..."
+			id="com.genuitec.copilot4eclipse.commands.showStatusCommand">
+		</command>
+		<command
+            categoryId="com.genuitec.copilot4eclipse.commands.category"
+            name="Show Completions"
+            id="com.genuitec.copilot4eclipse.commands.showCompletionsCommand">
+        </command>
+        <command
+            categoryId="com.genuitec.copilot4eclipse.commands.category"
+            name="Next Completion"
+            id="com.genuitec.copilot4eclipse.commands.nextCompletionCommand">
+        </command>
+        <command
+            categoryId="com.genuitec.copilot4eclipse.commands.category"
+            name="Previous Completion"
+            id="com.genuitec.copilot4eclipse.commands.previousCompletionCommand">
+        </command>
+        <command
+            categoryId="com.genuitec.copilot4eclipse.commands.category"
+            name="Accept Next Word"
+            id="com.genuitec.copilot4eclipse.commands.insertWordCompletionCommand">
+        </command>
+        <command
+            categoryId="com.genuitec.copilot4eclipse.commands.category"
+            name="Accept To End of Line"
+            id="com.genuitec.copilot4eclipse.commands.insertEOLCompletionCommand">
+        </command>
+        <command
+            categoryId="com.genuitec.copilot4eclipse.commands.category"
+            name="Accept Completion"
+            id="com.genuitec.copilot4eclipse.commands.insertFullCompletionCommand">
+        </command>
+        <command
+            categoryId="com.genuitec.copilot4eclipse.commands.category"
+            name="Reject Completion"
+            id="com.genuitec.copilot4eclipse.commands.clearCompletionCommand">
+        </command>
+        <command
+			categoryId="com.genuitec.copilot4eclipse.commands.category"
+			name="Disable Completions"
+			id="com.genuitec.copilot4eclipse.commands.disableCompletionsGloballyCommand">
+		</command>
+		<command
+			categoryId="com.genuitec.copilot4eclipse.commands.category"
+			name="Disable Completions For Language"
+			id="com.genuitec.copilot4eclipse.commands.disableCompletionsForLanguageIdCommand">
+		</command>
+		<command
+			categoryId="com.genuitec.copilot4eclipse.commands.category"
+			name="Enable Completions"
+			id="com.genuitec.copilot4eclipse.commands.enableCompletionsCommand">
+		</command>
+        <command
+            categoryId="com.genuitec.copilot4eclipse.commands.category"
+            name="Sign In to GitHub Copilot..."
+            id="com.genuitec.copilot4eclipse.commands.signInCommand">
+        </command>
+        <command
+            categoryId="com.genuitec.copilot4eclipse.commands.category"
+            name="Sign Out of GitHub Copilot"
+            id="com.genuitec.copilot4eclipse.commands.signOutCommand">
+        </command>
+        <command
+            categoryId="com.genuitec.copilot4eclipse.commands.category"
+            name="Preferences..."
+            id="com.genuitec.copilot4eclipse.commands.openPreferencesCommand">
+        </command>
+        <command
+            categoryId="com.genuitec.copilot4eclipse.commands.category"
+            name="Copilot4Eclipse Home..."
+            id="com.genuitec.copilot4eclipse.commands.openHomeCommand">
+        </command>
+        <command
+            categoryId="com.genuitec.copilot4eclipse.commands.category"
+            name="Support Forum..."
+            id="com.genuitec.copilot4eclipse.commands.openForumCommand">
+        </command>
+	</extension>
+
+	<extension
+		point="org.eclipse.ui.handlers">
+		<handler
+			class="com.genuitec.copilot4eclipse.handlers.ShowStatusHandler"
+			commandId="com.genuitec.copilot4eclipse.commands.showStatusCommand">
+		</handler>
+		<handler
+            class="com.genuitec.copilot4eclipse.handlers.ShowCompletionsHandler"
+            commandId="com.genuitec.copilot4eclipse.commands.showCompletionsCommand">
+        </handler>
+        <handler
+            class="com.genuitec.copilot4eclipse.handlers.NextCompletionHandler"
+            commandId="com.genuitec.copilot4eclipse.commands.nextCompletionCommand">
+        </handler>
+        <handler
+            class="com.genuitec.copilot4eclipse.handlers.PreviousCompletionHandler"
+            commandId="com.genuitec.copilot4eclipse.commands.previousCompletionCommand">
+        </handler>
+        <handler
+            class="com.genuitec.copilot4eclipse.handlers.InsertWordCompletionHandler"
+            commandId="com.genuitec.copilot4eclipse.commands.insertWordCompletionCommand">
+        </handler>
+        <handler
+            class="com.genuitec.copilot4eclipse.handlers.InsertEOLCompletionHandler"
+            commandId="com.genuitec.copilot4eclipse.commands.insertEOLCompletionCommand">
+        </handler>
+        <handler
+            class="com.genuitec.copilot4eclipse.handlers.InsertFullCompletionHandler"
+            commandId="com.genuitec.copilot4eclipse.commands.insertFullCompletionCommand">
+        </handler>
+        <handler
+            class="com.genuitec.copilot4eclipse.handlers.ClearCompletionHandler"
+            commandId="com.genuitec.copilot4eclipse.commands.clearCompletionCommand">
+        </handler>
+		<handler
+			class="com.genuitec.copilot4eclipse.handlers.DisableCompletionsGloballyHandler"
+			commandId="com.genuitec.copilot4eclipse.commands.disableCompletionsGloballyCommand">
+		</handler>-
+		<handler
+			class="com.genuitec.copilot4eclipse.handlers.DisableCompletionsForLanguageIdHandler"
+			commandId="com.genuitec.copilot4eclipse.commands.disableCompletionsForLanguageIdCommand">
+		</handler>
+		<handler
+			class="com.genuitec.copilot4eclipse.handlers.EnableCompletionsHandler"
+			commandId="com.genuitec.copilot4eclipse.commands.enableCompletionsCommand">
+		</handler>
+		<handler
+            class="com.genuitec.copilot4eclipse.handlers.SignInHandler"
+            commandId="com.genuitec.copilot4eclipse.commands.signInCommand">
+        </handler>
+        <handler
+            class="com.genuitec.copilot4eclipse.handlers.SignOutHandler"
+            commandId="com.genuitec.copilot4eclipse.commands.signOutCommand">
+        </handler>
+        <handler
+			class="com.genuitec.copilot4eclipse.handlers.OpenPreferencesHandler"
+			commandId="com.genuitec.copilot4eclipse.commands.openPreferencesCommand">
+		</handler>
+        <handler
+            class="com.genuitec.copilot4eclipse.handlers.OpenHomeHandler"
+            commandId="com.genuitec.copilot4eclipse.commands.openHomeCommand">
+        </handler>
+        <handler
+            class="com.genuitec.copilot4eclipse.handlers.OpenForumHandler"
+            commandId="com.genuitec.copilot4eclipse.commands.openForumCommand">
+        </handler>
+	</extension>
+
+	
+	<extension
+		point="org.eclipse.ui.menus">
+		
+		<menuContribution
+			locationURI="menu:org.eclipse.ui.main.menu?after=additions">
+			<menu
+				id="com.genuitec.copilot4eclipse.menus.copilotMenu"
+				label="Copilot"
+				commandId="com.genuitec.copilot4eclipse.commands.showMenuCommand"
+				>
+				
+				<command
+                    commandId="com.genuitec.copilot4eclipse.commands.showStatusCommand"
+                    id="com.genuitec.copilot4eclipse.menus.showStatusCommand"
+                    icon="icons/information.png">
+                </command>
+                
+                <separator 
+                    name="status"
+                    visible="true">
+                </separator>
+                
+				<command
+                    commandId="com.genuitec.copilot4eclipse.commands.showCompletionsCommand"
+                    id="com.genuitec.copilot4eclipse.menus.showCompletionsCommand"
+                    icon="icons/show.png">
+                    <visibleWhen>
+	             		<test
+	             			property="com.genuitec.copilot4eclipse.ui.disableCompletionsForLanguageIdContextProperty" 
+	             			value="true"/>
+	             	</visibleWhen>      
+                </command>
+                <command
+                    commandId="com.genuitec.copilot4eclipse.commands.nextCompletionCommand"
+                    id="com.genuitec.copilot4eclipse.menus.nextCompletionCommand"
+                    icon="icons/show-next.png">
+                    <visibleWhen>
+	             		<test
+	             			property="com.genuitec.copilot4eclipse.ui.disableCompletionsForLanguageIdContextProperty" 
+	             			value="true"/>
+	             	</visibleWhen>
+                </command>
+                <command
+                    commandId="com.genuitec.copilot4eclipse.commands.previousCompletionCommand"
+                    id="com.genuitec.copilot4eclipse.menus.previouseCompletionCommand"
+                    icon="icons/show-prev.png">
+                    <visibleWhen>
+	             		<test
+	             			property="com.genuitec.copilot4eclipse.ui.disableCompletionsForLanguageIdContextProperty" 
+	             			value="true"/>
+	             	</visibleWhen>
+                </command>
+                
+                <separator 
+                    name="completions"
+                    visible="true">
+                </separator>
+                
+				<command
+					commandId="com.genuitec.copilot4eclipse.commands.disableCompletionsGloballyCommand"
+					id="com.genuitec.copilot4eclipse.menus.disableCompletionsGloballyCommand"
+					icon="icons/disable.png">
+					<visibleWhen>
+	             		<test
+	             			property="com.genuitec.copilot4eclipse.ui.disableCompletionsGloballyContextProperty" 
+	             			value="true"/>
+	             	</visibleWhen>
+				</command>
+				
+				<command
+					commandId="com.genuitec.copilot4eclipse.commands.disableCompletionsForLanguageIdCommand"
+					id="com.genuitec.copilot4eclipse.menus.disableCompletionsForLanguageIdCommand"
+					icon="icons/disable.png">
+					<visibleWhen>
+	             		<test
+	             			property="com.genuitec.copilot4eclipse.ui.disableCompletionsForLanguageIdContextProperty" 
+	             			value="true"/>
+	             	</visibleWhen>
+				</command>
+				<command
+					commandId="com.genuitec.copilot4eclipse.commands.enableCompletionsCommand"
+					id="com.genuitec.copilot4eclipse.menus.enableCompletionsCommand"
+					icon="icons/enable.png">
+					<visibleWhen>
+	             		<test
+	             			property="com.genuitec.copilot4eclipse.ui.enableCompletionsContextProperty" 
+	             			value="true"/>
+	             	</visibleWhen>
+				</command>
+				
+                
+                <separator 
+                    name="enablement"
+                    visible="true">
+                </separator>
+                
+                <command
+                    commandId="com.genuitec.copilot4eclipse.commands.signInCommand"
+                    id="com.genuitec.copilot4eclipse.menus.signInCommand"
+                    icon="icons/enter.png">
+                    <visibleWhen>
+	             		<test
+	             			property="com.genuitec.copilot4eclipse.ui.signedOutProperty"
+	             			value="true"/>
+	             	</visibleWhen>
+                </command>
+                
+                <command
+                    commandId="com.genuitec.copilot4eclipse.commands.signOutCommand"
+                    id="com.genuitec.copilot4eclipse.menus.signOutCommand"
+                    icon="icons/exit.png">
+                    <visibleWhen>
+	             		<test
+	             			property="com.genuitec.copilot4eclipse.ui.signedInProperty"
+	             			value="false"/>
+	             	</visibleWhen>
+                </command>
+				
+                <separator 
+                    name="prefs"
+                    visible="true">
+                </separator>
+                
+                <command
+                    commandId="com.genuitec.copilot4eclipse.commands.openPreferencesCommand"
+                    id="com.genuitec.copilot4eclipse.menus.openPreferencesCommand"
+                	icon="icons/preferences.png">
+                </command>
+                
+                <separator 
+                    name="resources"
+                    visible="true">
+                </separator>
+                
+                <menu
+                      icon="icons/resources.png"
+                      id="com.genuitec.copilot4eclipse.menus.copilotMenu.resources"
+                      label="Resources">    
+	                <command
+	                    commandId="com.genuitec.copilot4eclipse.commands.openHomeCommand"
+	                    id="com.genuitec.copilot4eclipse.menus.openHomeCommand"
+	                	icon="icons/home_nav.png">
+	                </command>
+	                <command
+	                    commandId="com.genuitec.copilot4eclipse.commands.openForumCommand"
+	                    id="com.genuitec.copilot4eclipse.menus.openForumCommand"
+	                	icon="icons/support.png">
+	                </command>
+	        	</menu>
+			</menu>
+		</menuContribution>
+		
+		
+		<menuContribution
+			locationURI= "toolbar:org.eclipse.ui.trim.status">	
+			<toolbar
+               id="com.genuitec.copilot4eclipse.ui.statusbar.toolbar">
+               <control
+                 id="com.genuitec.copilot4eclipse.ui.statusbar.menu"
+	             class="com.genuitec.copilot4eclipse.ui.StatusBarMenuManager">
+	           </control>
+            </toolbar>
+		</menuContribution>
+	
+    </extension>
+
+	<extension point="org.eclipse.core.expressions.propertyTesters">
+	    <propertyTester
+			id="com.genuitec.copilot4eclipse.ui.signedInPropertyTester"
+	    	class="com.genuitec.copilot4eclipse.ui.SignedInPropertyTester"        
+	        namespace="com.genuitec.copilot4eclipse.ui"
+	        properties="signedInProperty, signedOutProperty, signedInNotAuthorizationProperty"
+	        type="java.lang.Object">
+	    </propertyTester>
+	    <propertyTester
+			id="com.genuitec.copilot4eclipse.ui.validCompletionContextTester"
+	    	class="com.genuitec.copilot4eclipse.ui.ValidCompletionContextTester"        
+	        namespace="com.genuitec.copilot4eclipse.ui"
+	        properties="validCompletionContextProperty"
+	        type="java.lang.Object">
+	    </propertyTester>
+	    <propertyTester
+			id="com.genuitec.copilot4eclipse.ui.languageIdContextTester"
+	    	class="com.genuitec.copilot4eclipse.ui.LanguageIdContextTester"        
+	        namespace="com.genuitec.copilot4eclipse.ui"
+	        properties="disableCompletionsForLanguageIdContextProperty, disableCompletionsGloballyContextProperty, 
+	        			enableCompletionsContextProperty"
+	        type="java.lang.Object">
+	    </propertyTester>
+	</extension>
+	
+	<extension
+	     point="org.eclipse.ui.contexts">
+	  <context
+	        id="com.genuitec.copilot4eclipse.completionContext"
+	        name="Completion"
+	        description="Copilot4Eclipse completions available context"
+	        parentId="org.eclipse.ui.textEditorScope">
+	  </context>
+	</extension>
+
+    <extension
+        point="org.eclipse.ui.bindings">
+        <key
+            commandId="com.genuitec.copilot4eclipse.commands.showCompletionsCommand"
+            contextId="org.eclipse.ui.textEditorScope"
+            schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
+            sequence="M3+\">
+         </key>
+         <key
+            commandId="com.genuitec.copilot4eclipse.commands.nextCompletionCommand"
+            contextId="com.genuitec.copilot4eclipse.completionContext"
+            schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
+            sequence="M3+]">
+         </key>
+         <key
+            commandId="com.genuitec.copilot4eclipse.commands.previousCompletionCommand"
+            contextId="com.genuitec.copilot4eclipse.completionContext"
+            schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
+            sequence="M3+[">
+         </key>
+         <key
+            commandId="com.genuitec.copilot4eclipse.commands.insertWordCompletionCommand"
+            contextId="com.genuitec.copilot4eclipse.completionContext"
+            schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
+            sequence="M1+ARROW_RIGHT">
+         </key>
+         <key
+            commandId="com.genuitec.copilot4eclipse.commands.insertEOLCompletionCommand"
+            contextId="com.genuitec.copilot4eclipse.completionContext"
+            schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
+            platform="cocoa"
+            sequence="M1+M3+ARROW_RIGHT">
+         </key>
+         <key
+            commandId="com.genuitec.copilot4eclipse.commands.insertEOLCompletionCommand"
+            contextId="com.genuitec.copilot4eclipse.completionContext"
+            schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
+            platform="win32"
+            sequence="M1+M3+ARROW_RIGHT">
+         </key>
+         <!--
+         <key
+            commandId="com.genuitec.copilot4eclipse.commands.insertEOLCompletionCommand"
+            contextId="com.genuitec.copilot4eclipse.completionContext"
+            schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
+            platform="gtk"
+            sequence="M3+SHIFT+ARROW_RIGHT">
+         </key>
+         -->
+         <key
+            commandId="com.genuitec.copilot4eclipse.commands.insertFullCompletionCommand"
+            contextId="com.genuitec.copilot4eclipse.completionContext"
+            schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
+            sequence="TAB">
+         </key>
+         <key
+            commandId="com.genuitec.copilot4eclipse.commands.clearCompletionCommand"
+            contextId="com.genuitec.copilot4eclipse.completionContext"
+            schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
+            sequence="ESC">
+         </key>
+         <key
+            commandId="com.genuitec.copilot4eclipse.commands.clearCompletionCommand"
+            contextId="com.genuitec.copilot4eclipse.completionContext"
+            schemeId="org.eclipse.ui.emacsAcceleratorConfiguration"
+            sequence="M1+C">
+         </key>  
+    </extension>
+	
+</plugin>

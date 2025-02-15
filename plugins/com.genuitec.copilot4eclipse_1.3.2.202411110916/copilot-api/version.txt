@@ -1,0 +1,7 @@
+
+
+language-server
+  version: "1.236.0",
+  build: "1142",
+  node: ">=18.0.0", 
+  npm: ">=9.0.0"

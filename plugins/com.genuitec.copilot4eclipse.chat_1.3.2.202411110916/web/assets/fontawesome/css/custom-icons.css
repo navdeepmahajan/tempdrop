@@ -1,0 +1,27 @@
+.fak.fa-add::before, .fa-kit.fa-add::before { content: "\e002"; }
+.fak.fa-clear-all::before, .fa-kit.fa-clear-all::before { content: "\e008"; }
+.fak.fa-clippy::before, .fa-kit.fa-clippy::before { content: "\e003"; }
+.fak.fa-close::before, .fa-kit.fa-close::before { content: "\e004"; }
+.fak.fa-gear::before, .fa-kit.fa-gear::before { content: "\e005"; }
+.fak.fa-info::before, .fa-kit.fa-info::before { content: "\e006"; }
+.fak.fa-issues::before, .fa-kit.fa-issues::before { content: "\e007"; }
+.fak.fa-thumbsdown::before, .fa-kit.fa-thumbsdown::before { content: "\e000"; }
+.fak.fa-thumbsup::before, .fa-kit.fa-thumbsup::before { content: "\e001"; }
+
+.fak, .fa-kit {
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-font-smoothing: antialiased;
+  display: var(--fa-display, inline-block);
+  font-style: normal;
+  font-variant: normal;
+  text-rendering: auto;
+  line-height: 1;
+  font-family: "Font Awesome Kit";
+}
+
+@font-face {
+  font-family: "Font Awesome Kit";
+  font-style: normal;
+  font-display: block;
+  src: url("../webfonts/custom-icons.woff2") format("woff2"), url("../webfonts/custom-icons.ttf") format("truetype");
+}

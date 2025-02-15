@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Copilot4Eclipse Chat</title>
+    <!-- <script src="https://kit.fontawesome.com/ebbe363942.js" crossorigin="anonymous"></script> -->
+    <link href="assets/fontawesome/css/fontawesome.css" rel="stylesheet" />
+    <link href="assets/fontawesome/css/light.css" rel="stylesheet" />
+    <link href="assets/fontawesome/css/thin.css" rel="stylesheet" />
+    <link href="assets/fontawesome/css/solid.css" rel="stylesheet" />
+    <link href="assets/fontawesome/css/custom-icons.css" rel="stylesheet" />
+    <link rel="stylesheet" href="assets/jquery-ui-1.13.2.custom/jquery-ui.css">
+    <link rel="stylesheet" href="assets/three-dots.css">
+    <link rel="stylesheet" href="variables.css">
+    <link rel="stylesheet" href="assets/prism.css">
+    <link rel="stylesheet" href="assets/prism-custom.css">
+    <link rel="stylesheet" href="chat-core.css">
+    <link rel="stylesheet" href="chat.css">
+    <link rel="stylesheet" href="msginput.css">
+  </head>
+
+  <body>
+    <!-- templates -->
+    <div id="templates" style="display:none;">
+
+      <div id="notices">
+        <div id="notice" class="notice">
+          <i id="noticeImage" class="fa-solid" 
+                style="color: #74C0FC;"></i>
+          <span id="noticeText"></span>
+        </div>
+      </div>
+
+      <div id="message" class="message">
+        <div id="messageHeader" class="messageHeader">
+          <img id="messageAvatarImg" class="iconAvatar"/>
+          <p id="messageSender"></p>
+          <div id="messageButtons" class="rightAlignedImageButtons">
+            <button id="thumbsUpBtn" class="imageButton" title="Helpful">
+              <i class="fa-thin fa-thumbs-up"></i>
+            </button>
+            <button id="thumbsDownBtn" class="imageButton" title="Unhelpful">
+              <i class="fa-thin fa-thumbs-down fa-flip-horizontal"></i>
+            </button>
+            <button id="closeBtn" class="imageButton" title="Delete">
+              <!-- <i class="fa-kit fa-close"></i> -->
+              <i class="fa-thin fa-trash"></i>
+            </button>
+          </div>
+          <!-- <div id="referencesContainer">
+            <h4 id="referencesHeader">References ()</h4>
+            <div id="referencesList">
+              <ul>
+                <li id="referenceItem"><span class="ui-icon ui-icon-document" style="display:inline-block;"></span> Name 1</li>
+              </ui>
+            </div>
+          </div>  -->
+          <div id="spacer" style="flex-grow: 1; width: 100%;"></div>
+          <div id="noticeContainer">
+          </div>
+        </div>
+        <div id="messageBody" class="messageBody">
+        </div> 
+        <div id="messageFooter" class="messageFooter">
+          <div id="referencesContainer">
+            <h4 id="referencesHeader">References ()</h4>
+            <div id="referencesList">
+              <ul>
+                <!-- <li id="referenceItem"><span class="ui-icon ui-icon-document" style="display:inline-block;"></span> Name 1</li>  -->
+              </ui>
+            </div>
+          </div>
+          <div id="noticeContainer" class="noticeContainer">
+          </div>
+          
+          <div id="dots" class="dots">
+            <div class="dot-flashing"></div>
+          </div>
+        </div>
+      </div>
+
+      <div id="conversation" class="conversation">
+        <div class="conversationRow1">
+          <i class="fa-regular fa-message" style="color: #74C0FC;"></i>
+          <span id="conversationName" class="conversationText"> 
+          </span>
+          <button id="conversationDeleteBtn" class="imageButton deleteConversationBtn" title="Delete Conversation">
+            <!-- <i class="fa-kit fa-close"></i> -->
+            <i class="fa-light fa-trash"></i>
+          </button>
+        </div>
+        <div class="conversationRow2">
+          <i></i>
+          <span id="conversationDate" class="conversationText">
+          </span>
+          <button id="conversationDeleteBtn" class="imageButton deleteConversationBtn placeholder">
+            <i></i>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- application -->
+    <!-- <div id="referenceContainer">
+      <h3 id="referencesHeader">References1</h3>
+      <div id="referencesList"><p>list of refs here</p></div>
+   </div> -->
+    <div id="c4eChatApp">
+      <div id="chatPage">
+       <div style="display: block;"> <!-- add div to force toolbar resize -->
+          <div class="c4etoolbar">
+            <span id="toolbarConversationName"></span>
+            <div class="toolbarGroup" style="flex-grow: 0">
+              <button id="chatPageScrollBottomBtn" title="Scroll to Bottom" class="toolbarImageButton">
+                <i class="fa-solid fa-arrow-down-to-line"></i>
+              </button>
+              <button id="chatPageScrollTopBtn" title="Scroll to Top" class="toolbarImageButton">
+                <i class="fa-solid fa-arrow-up-to-line"></i>
+              </button>
+              <!-- <button id="divider" title="New Conversation" class="toolbarImageButton">
+                <i class="fa-light fa-pipe"></i>
+              </button> -->
+              <button id="showConversationMgmtPageBtn"  title="Show Conversations..." class="toolbarImageButton">
+                <!-- <i class="fa-solid fa-message-dots"></i> -->
+                <i class="fa-solid fa-clock-rotate-left"></i>
+              </button>
+              <button id="chatPageNewConversationBtn" title="New Conversation" class="toolbarImageButton">
+                <i class="fa-solid fa-plus"></i>
+              </button>
+              <button id="showChatMenuBtn"  class="toolbarImageButton">
+                <i class="fa-solid fa-ellipsis-vertical"></i>
+              </button>
+            </div>
+          </div> 
+        </div>
+        <div id="messageContainer">
+        </div>
+        <div id="messageInputInfoContainer">
+          <div id="messageInputInfo">
+            <i id="messageInputInfoImage" class="fa-solid" 
+                  style="color: #74C0FC;"></i>
+            <span id="messageInputInfoText"></span>
+          </div>
+        </div>
+        <div id="messageInputContainer">
+          <div id="messageInputForm">
+            <div id="messageInput" class="editable" contenteditable="true" 
+                data-placeholder="Ask Copilot a question or type '/' for commands"></div>
+            <button id="sendBtn" type="submit" class="imageButton" title="Send" onclick="handlePromptSubmit(event)">
+              <i id="sendBtnImage" class="fa-light fa-paper-plane-top" ></i>
+            </button>
+          </div>
+          <div id="mireferencesContainer">
+            <button id="addRefBtn" title="Add Reference" onclick="handleSelectReferences(event)">
+              <i class="fa-light fa-circle-plus" style="font-size: 20px;"></i>
+            </button>
+            <div id="mireferencesBtnBar"></div>
+          </div>
+          <div id="messageInputOverlay"></div>
+        </div>
+      </div>
+
+      <div id="chatMgmtPage" style="display:none;">
+        <div id="chatMgmtToolbar" class="c4etoolbar">
+          <div id="backGroup" class="toolbarGroup">
+            <button id="conversationMgmtPageBackBtn" title="Back to Chat" class="toolbarImageButton">
+              <i class="fa-solid fa-arrow-left"></i>
+            </button>
+            <span id="toolbarBackLabel" class="toolbarLabel">BACK</span>
+          </div>
+          <div class="toolbarGroup">
+              <button id="conversationMgmtPageNewConversationBtn" title="New Conversation" class="toolbarImageButton">
+                <i class="fa-solid fa-plus"></i>
+              </button>
+              <button id="conversationMgmtPageDeleteAllBtn" title="Delete All Conversations" class="toolbarImageButton">
+                <i class="fa-solid fa-trash"></i>
+              </button>
+          </div>
+        </div> 
+        <div id="chatMgmtTitle" class="title">CONVERSATIONS</div>
+        <div id="conversationList">
+        </div>
+      </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/showdown@2.1.0/dist/showdown.min.js"></script>
+    <script src="assets/jquery-ui-1.13.2.custom/external/jquery/jquery.js"></script>
+    <script src="assets/jquery-ui-1.13.2.custom/jquery-ui.js"></script>
+    <script src="assets/prism.js" data-manual></script>
+    <script src="chat.js"></script>
+    <script src="msginput.js"></script>
+  </body>
+
+  </html>
+
+<!-- <i class="fa-kit fa-thumbsup"></i> -->
+<!-- <span id="mirefClose" class="ui-icon ui-icon-close"></span> -->
